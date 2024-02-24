@@ -14,6 +14,8 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import CategoryCard from "../Components/CategoryCard";
 import Loader from "../Components/Loader";
 
+import categoryData from "../categoryData";
+
 const img = require("../assets/taxi-gears.gif");
 
 const Home = () => {
@@ -28,12 +30,13 @@ const Home = () => {
   const fetchCategories = async () => {
     try {
       setCategoriesLoading(true);
-      console.clear();
-      const res = await fetch(
-        "https://www.themealdb.com/api/json/v1/1/categories.php"
-      );
-      const data = await res.json();
-      setCategoriesData(data.categories);
+      // const res = await fetch(
+      //   "https://www.themealdb.com/api/json/v1/1/categories.php"
+      // );
+      // const data = await res.json();
+      // setCategoriesData(data.categories);
+      // console.log(data.categories);
+      setCategoriesData(categoryData);
       setCategoriesLoading(false);
     } catch (err) {
       console.error("Error fetching meal categories: ", err);
@@ -56,8 +59,13 @@ const Home = () => {
     }
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchCategories();
+    }, [])
+  );
+
   useEffect(() => {
-    fetchCategories();
     fetchRandomMeal();
   }, []);
 
@@ -90,18 +98,24 @@ const Home = () => {
         </View>
 
         <Text style={styles.subheading}>Popular Categories</Text>
-        <ScrollView horizontal style={styles.categoriesList}>
-          {categoriesData?.map((category, index) => (
-            <Pressable
-              key={index}
-              onPress={() => {
-                navigation.navigate("CategoryScreen", { category });
-              }}
-            >
-              <CategoryCard data={category} />
-            </Pressable>
-          ))}
-        </ScrollView>
+        <>
+          {categoriesData.length == 0 ? (
+            <Text>Categories Error</Text>
+          ) : (
+            <ScrollView horizontal style={styles.categoriesList}>
+              {categoriesData?.map((category) => (
+                <Pressable
+                  key={category.id}
+                  onPress={() => {
+                    navigation.navigate("CategoryScreen", { category });
+                  }}
+                >
+                  <CategoryCard data={category} />
+                </Pressable>
+              ))}
+            </ScrollView>
+          )}
+        </>
 
         <Text style={styles.subheading}>Random Meal</Text>
         <View>

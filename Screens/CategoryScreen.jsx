@@ -12,9 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import Loader from "../Components/Loader";
 
 const CategoryScreen = ({ route }) => {
-  const [categoryName, setCategoryName] = useState(
-    route.params.category.strCategory
-  );
+  const [categoryName, setCategoryName] = useState(route.params.category.name);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 

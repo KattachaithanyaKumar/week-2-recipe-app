@@ -4,8 +4,8 @@ import React from "react";
 const CategoryCard = ({ data }) => {
   return (
     <View style={styles.card}>
-      <Image source={{ uri: data.strCategoryThumb }} style={styles.image} />
-      <Text style={styles.text}>{data.strCategory}</Text>
+      <Image source={{ uri: data.image }} style={styles.image} />
+      <Text style={styles.text}>{data.name}</Text>
     </View>
   );
 };
